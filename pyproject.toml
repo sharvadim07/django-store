@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "django-store"
+version = "0.1.0"
+description = "Store server with django"
+authors = ["Vadim <sharvadim07@yandex.ru>"]
+readme = "README.md"
+packages = [{include = "django_store"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "4.2.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
