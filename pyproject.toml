@@ -9,6 +9,7 @@ packages = [{include = "django_store"}]
 [tool.poetry.dependencies]
 python = "^3.11"
 django = "4.2.1"
+pillow = "^9.5.0"
 
 
 [build-system]
