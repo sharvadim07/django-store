@@ -6,6 +6,9 @@ class Category(models.Model):
     name = models.CharField(max_length=128)
     description = models.TextField(null=True, blank=True)
 
+    def __str__(self) -> str:
+        return self.name
+
 
 class Product(models.Model):
     name = models.CharField(max_length=128)
@@ -20,7 +23,13 @@ class Product(models.Model):
     )
     quantity = models.PositiveIntegerField(default=0)
 
+    def __str__(self) -> str:
+        return self.name
+
 
 class ProductCategory(models.Model):
-    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
-    category_id = models.ForeignKey(Category, on_delete=models.PROTECT)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT)
+
+    def __str__(self) -> str:
+        return f"{self.product} - {self.category}"
