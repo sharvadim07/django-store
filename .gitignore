@@ -131,4 +131,4 @@ data/
 .vscode/
 .DS_Store
 test*
-*.sqlite3
+# *.sqlite3
