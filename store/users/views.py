@@ -1,9 +1,10 @@
 from django.shortcuts import render, HttpResponseRedirect
-from django.contrib import auth
+from django.contrib import auth, messages
 from django.urls import reverse
 
 # from users.models import User
 from users.forms import UserLoginForm, UserRegistrationForm, UserProfileForm
+
 
 # Create your views here.
 def login(request):
@@ -19,9 +20,6 @@ def login(request):
             if user:
                 auth.login(request, user)
                 return HttpResponseRedirect(reverse("index"))
-        else:
-            form = UserLoginForm()
-
     else:
         form = UserLoginForm()
     context = {"form": form}
@@ -37,9 +35,11 @@ def registration(request):
         form = UserRegistrationForm(data=request.POST)
         if form.is_valid():
             form.save()
+            messages.success(
+                request=request,
+                message="Регистрация успешна!",
+            )
             return HttpResponseRedirect(reverse("users:login"))
-        else:
-            print(form.errors)
     else:
         form = UserRegistrationForm()
     context = {"form": form}
@@ -60,8 +60,6 @@ def profile(request):
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse("users:profile"))
-        else:
-            print(form.errors)
     else:
         form = UserProfileForm(instance=request.user)
     context = {
