@@ -1,4 +1,5 @@
 from django.db import models
+from users.models import User
 
 
 # Create your models here.
@@ -22,14 +23,49 @@ class Product(models.Model):
         blank=True,
     )
     quantity = models.PositiveIntegerField(default=0)
+    categories = models.ManyToManyField(Category, null=True, blank=True)
 
     def __str__(self) -> str:
         return self.name
 
 
-class ProductCategory(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.PROTECT)
+# class ProductCategory(models.Model):
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+#     category = models.ForeignKey(Category, on_delete=models.PROTECT)
+
+#     def __str__(self) -> str:
+#         return f"Продукт: {self.product} - Категория: {self.category}"
+
+
+class Basket(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return f"{self.product} - {self.category}"
+        return f"Корзина для {self.user.username}"
+
+
+class ProductBasketQuerySet(models.QuerySet):
+    @property
+    def total_sum(self):
+        return sum(
+            product_basket.sum for product_basket in self
+        )
+
+    @property
+    def total_quantity(self):
+        return sum(
+            product_basket.quantity for product_basket in self
+        )
+
+
+class ProductBasket(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    basket = models.ForeignKey(Basket, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=0)
+
+    objects = ProductBasketQuerySet.as_manager()
+
+    @property
+    def sum(self):
+        return self.product.price * self.quantity
