@@ -18,10 +18,14 @@ def index(request):
     )
 
 
-def products(request):
+def products(request, category_id=None):
+    if category_id:
+        products = Category.objects.get(id=category_id).product_set.all()
+    else:
+        products = Product.objects.all()
     context = {
         "title": "Store - Каталог",
-        "products": Product.objects.all(),
+        "products": products,
         "categories": Category.objects.all(),
     }
     return render(
