@@ -10,6 +10,7 @@ app_name = "products"
 
 urlpatterns = [
     path("", products, name="index"),
+    path("page/<int:page_num>", products, name="paginator"),
     path("category/<int:category_id>", products, name="category"),
     path(
         "basket/add/<int:product_id>/",
