@@ -10,7 +10,7 @@ class Category(models.Model):
     class Meta:
         verbose_name = "Category"
         verbose_name_plural = "Categories"
-    
+
     def __str__(self) -> str:
         return self.name
 
@@ -32,7 +32,7 @@ class Product(models.Model):
     class Meta:
         verbose_name = "Product"
         verbose_name_plural = "Products"
-    
+
     def __str__(self) -> str:
         return self.name
 
@@ -56,15 +56,11 @@ class Basket(models.Model):
 class ProductBasketQuerySet(models.QuerySet):
     @property
     def total_sum(self):
-        return sum(
-            product_basket.sum for product_basket in self
-        )
+        return sum(product_basket.sum for product_basket in self)
 
     @property
     def total_quantity(self):
-        return sum(
-            product_basket.quantity for product_basket in self
-        )
+        return sum(product_basket.quantity for product_basket in self)
 
 
 class ProductBasket(models.Model):

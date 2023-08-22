@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from users.forms import UserLoginForm, UserRegistrationForm, UserProfileForm
 from products.models import Basket, ProductBasket
 
+
 # Create your views here.
 def login(request):
     if request.method == "POST":
@@ -50,6 +51,7 @@ def registration(request):
         context=context,
     )
 
+
 @login_required
 def profile(request):
     if request.method == "POST":
@@ -71,11 +73,8 @@ def profile(request):
         "basket": basket,
         "products_basket": products_basket,
     }
-    return render(
-        request=request,
-        template_name="users/profile.html",
-        context=context
-    )
+    return render(request=request, template_name="users/profile.html", context=context)
+
 
 @login_required
 def logout(request):

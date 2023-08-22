@@ -1,4 +1,8 @@
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import (
+    AuthenticationForm,
+    UserCreationForm,
+    UserChangeForm,
+)
 from django import forms
 from users.models import User
 
@@ -87,6 +91,7 @@ class UserRegistrationForm(UserCreationForm):
             "password2",
         )
 
+
 class UserProfileForm(UserChangeForm):
     first_name = forms.CharField(
         widget=forms.TextInput(
@@ -119,11 +124,7 @@ class UserProfileForm(UserChangeForm):
         ),
     )
     image = forms.ImageField(
-        widget=forms.FileInput(
-            attrs={
-                "class": "custom-file-input"
-            }
-        ),
+        widget=forms.FileInput(attrs={"class": "custom-file-input"}),
         required=False,
     )
 

@@ -2,9 +2,11 @@ from django.contrib import admin
 
 
 from products.models import Product, Category, Basket, ProductBasket
+
 # Register your models here.
 
 admin.site.register(Category)
+
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
@@ -18,7 +20,10 @@ class ProductAdmin(admin.ModelAdmin):
         "name",
         "short_description",
         "description",
-        ("quantity", "price",),
+        (
+            "quantity",
+            "price",
+        ),
         "image",
     )
     # readonly_fields = ()
@@ -38,10 +43,9 @@ class ProductAdmin(admin.ModelAdmin):
 
 class ProductBasketInline(admin.TabularInline):
     model = ProductBasket
-    readonly_fields = (
-        "sum",
-    )
+    readonly_fields = ("sum",)
     extra = 0
+
 
 @admin.register(Basket)
 class BasketAdmin(admin.ModelAdmin):
@@ -50,10 +54,10 @@ class BasketAdmin(admin.ModelAdmin):
         "products",
         "created_at",
     )
-    inlines = (
-        ProductBasketInline,
-    )
+    inlines = (ProductBasketInline,)
 
     def products(self, object):
-        products_basket = ProductBasket.objects.filter(basket=object,)
+        products_basket = ProductBasket.objects.filter(
+            basket=object,
+        )
         return [product_basket.product.name for product_basket in products_basket]

@@ -12,6 +12,12 @@ django = "4.2.1"
 pillow = "^9.5.0"
 
 
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.5.1"
+black = "^23.7.0"
+flake8 = "^6.1.0"
+pre-commit = "^3.3.3"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
