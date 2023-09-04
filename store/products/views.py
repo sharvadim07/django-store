@@ -1,41 +1,44 @@
-from django.shortcuts import render, HttpResponseRedirect
+from typing import Any, Dict
+from django.db.models.query import QuerySet
+from django.shortcuts import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator
+from django.views.generic.base import TemplateView
+from django.views.generic.list import ListView
+
 
 from products.models import Product, Category, Basket, ProductBasket
 
 
 # Create your views here.
-def index(request):
-    context = {
-        "title": "Super store",
-        "username": "Vadim",
-    }
-    return render(
-        request,
-        "products/index.html",
-        context=context,
-    )
+class IndexView(TemplateView):
+    template_name = "products/index.html"
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super(IndexView, self).get_context_data()
+        context["title"] = "Super store"
+        return context
 
 
-def products(request, category_id=None, page_num=1):
-    products = (
-        Category.objects.get(id=category_id).product_set.all()
-        if category_id
-        else Product.objects.all()
-    )
-    paginator = Paginator(object_list=products, per_page=3, allow_empty_first_page=True)
-    products_paginator = paginator.page(page_num)
-    context = {
-        "title": "Store - Каталог",
-        "products": products_paginator,
-        "categories": Category.objects.all(),
-    }
-    return render(
-        request,
-        "products/products.html",
-        context=context,
-    )
+class ProductsListView(ListView):
+    model = Product
+    template_name = "products/products.html"
+    paginate_by = 3
+
+    def get_queryset(self) -> QuerySet[Any]:
+        queryset = super(ProductsListView, self).get_queryset()
+        category_id = self.kwargs.get("category_id")
+        queryset = (
+            Category.objects.get(id=category_id).product_set.all()
+            if category_id
+            else queryset
+        )
+        return queryset
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super(ProductsListView, self).get_context_data()
+        context["title"] = "Store - Каталог"
+        context["categories"] = Category.objects.all()
+        return context
 
 
 @login_required

@@ -1,7 +1,7 @@
 from django.urls import path
 
 from products.views import (
-    products,
+    ProductsListView,
     add_product_to_basket,
     remove_product_from_basket,
 )
@@ -9,9 +9,9 @@ from products.views import (
 app_name = "products"
 
 urlpatterns = [
-    path("", products, name="index"),
-    path("page/<int:page_num>", products, name="paginator"),
-    path("category/<int:category_id>", products, name="category"),
+    path("", ProductsListView.as_view(), name="index"),
+    path("page/<int:page>", ProductsListView.as_view(), name="paginator"),
+    path("category/<int:category_id>", ProductsListView.as_view(), name="category"),
     path(
         "basket/add/<int:product_id>/",
         add_product_to_basket,
