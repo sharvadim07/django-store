@@ -18,7 +18,7 @@ urlpatterns = [
     path("logout/", login_required(LogoutView.as_view()), name="logout"),
     path(
         "verify/<str:email>/<uuid:code>",
-        login_required(EmailVerificationView.as_view()),
+        EmailVerificationView.as_view(),
         name="email_verification",
     ),
 ]

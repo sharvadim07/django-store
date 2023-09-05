@@ -38,12 +38,12 @@ class EmailVerification(models.Model):
         send_mail(
             subject=subject,
             message=message,
-            from_email="from@example.com",
+            from_email=settings.EMAIL_HOST_USER,
             recipient_list=[self.user.email],
         )
 
     def is_expired(self) -> bool:
-        if self.expiration >= timezone.now():
+        if self.expiration <= timezone.now():
             return True
         else:
             return False
