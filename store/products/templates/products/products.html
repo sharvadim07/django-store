@@ -84,23 +84,23 @@
                     <nav aria-label="Page navigation example">
                         <ul class="pagination justify-content-center">
                             <li class="page-item {% if not page_obj.has_previous %} disabled {% endif %}">
-                                <a class="page-link" 
+                                <a class="page-link"
                                     href="{% if page_obj.has_previous %} {% url "products:paginator" page_obj.previous_page_number %} {% else %} # {% endif %}"
-                                    tabindex="-1" 
+                                    tabindex="-1"
                                     aria-disabled="true">
                                     Предыдущая
                                 </a>
                             </li>
                             {% for page_num in page_obj.paginator.page_range  %}
                                 <li class="page-item">
-                                    <a class="page-link" 
+                                    <a class="page-link"
                                         href="{% url "products:paginator" page_num %}">
                                         {{ page_num }}
                                     </a>
                                 </li>
                             {% endfor %}
                             <li class="page-item {% if not page_obj.has_next %} disabled {% endif %}">
-                                <a class="page-link" 
+                                <a class="page-link"
                                     href="{% if page_obj.has_next %} {% url "products:paginator" page_obj.next_page_number %} {% else %} # {% endif %}">
                                     Следующая
                                 </a>

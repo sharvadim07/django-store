@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from users.models import User, EmailVerification
+from users.models import EmailVerification, User
 
 
 # Register your models here.
