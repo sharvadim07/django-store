@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Store server with django"
 authors = ["Vadim <sharvadim07@yandex.ru>"]
 readme = "README.md"
-packages = [{include = "django_store"}]
+packages = [{include = "store"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -13,9 +13,6 @@ pillow = "^9.5.0"
 
 
 [tool.poetry.group.dev.dependencies]
-mypy = "^1.5.1"
-black = "^23.7.0"
-flake8 = "^6.1.0"
 pre-commit = "^3.3.3"
 
 [build-system]
