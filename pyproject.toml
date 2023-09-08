@@ -10,6 +10,7 @@ packages = [{include = "store"}]
 python = "^3.11"
 django = "4.2.1"
 pillow = "^9.5.0"
+psycopg2 = "^2.9.7"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -17,6 +18,7 @@ pre-commit = "^3.4.0"
 black = "^23.7.0"
 isort = "^5.12.0"
 flake8 = "^6.1.0"
+mypy = "^1.5.1"
 
 [build-system]
 requires = ["poetry-core"]

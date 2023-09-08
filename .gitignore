@@ -132,3 +132,4 @@ data/
 .DS_Store
 test*
 # *.sqlite3
+.my_pgpass
