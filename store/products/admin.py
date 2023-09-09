@@ -6,6 +6,11 @@ from products.models import Basket, Category, Product, ProductBasket
 admin.site.register(Category)
 
 
+class ProductCategoryInline(admin.TabularInline):
+    model = Product.categories.through
+    extra = 1
+
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = (
@@ -34,6 +39,7 @@ class ProductAdmin(admin.ModelAdmin):
         "name",
         "-quantity",
     )
+    inlines = (ProductCategoryInline,)
 
     def category(self, object):
         return [category.name for category in object.categories.all()]
