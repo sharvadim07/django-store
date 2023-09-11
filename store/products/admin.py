@@ -1,11 +1,14 @@
 from django.contrib import admin
-
-
-from products.models import Product, Category, Basket, ProductBasket
+from products.models import Basket, Category, Product, ProductBasket
 
 # Register your models here.
 
 admin.site.register(Category)
+
+
+class ProductCategoryInline(admin.TabularInline):
+    model = Product.categories.through
+    extra = 1
 
 
 @admin.register(Product)
@@ -36,6 +39,7 @@ class ProductAdmin(admin.ModelAdmin):
         "name",
         "-quantity",
     )
+    inlines = (ProductCategoryInline,)
 
     def category(self, object):
         return [category.name for category in object.categories.all()]

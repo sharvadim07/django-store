@@ -4,19 +4,21 @@ version = "0.1.0"
 description = "Store server with django"
 authors = ["Vadim <sharvadim07@yandex.ru>"]
 readme = "README.md"
-packages = [{include = "django_store"}]
+packages = [{include = "store"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
 django = "4.2.1"
 pillow = "^9.5.0"
+psycopg2 = "^2.9.7"
 
 
 [tool.poetry.group.dev.dependencies]
-mypy = "^1.5.1"
+pre-commit = "^3.4.0"
 black = "^23.7.0"
+isort = "^5.12.0"
 flake8 = "^6.1.0"
-pre-commit = "^3.3.3"
+mypy = "^1.5.1"
 
 [build-system]
 requires = ["poetry-core"]

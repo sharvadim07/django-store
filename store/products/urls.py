@@ -1,5 +1,4 @@
 from django.urls import path
-
 from products.views import (
     ProductsListView,
     add_product_to_basket,
