@@ -10,7 +10,7 @@ packages = [{include = "store"}]
 python = "^3.11"
 django = "4.2.1"
 pillow = "^9.5.0"
-psycopg2 = "^2.9.7"
+psycopg2-binary = "^2.9.7"
 django-allauth = "^0.56.1"
 
 

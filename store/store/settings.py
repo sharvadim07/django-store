@@ -102,11 +102,10 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "HOST": SECRETS["DB_HOST"],
-        "NAME": "store_db",
-        "USER": "store_user",
-        "OPTIONS": {
-            "passfile": ".my_pgpass",
-        },
+        "PORT": SECRETS["DB_PORT"],
+        "NAME": SECRETS["DB_NAME"],
+        "USER": SECRETS["DB_USER"],
+        "PASSWORD": SECRETS["DB_PASSWORD"],
     }
 }
 

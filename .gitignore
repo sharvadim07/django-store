@@ -130,7 +130,7 @@ dmypy.json
 data/
 .vscode/
 .DS_Store
-test*
+# test*
 # *.sqlite3
 .my_pgpass
 .my_secrets.json
