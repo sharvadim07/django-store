@@ -133,4 +133,4 @@ data/
 # test*
 # *.sqlite3
 .my_pgpass
-.my_secrets.json
+my_secrets.py

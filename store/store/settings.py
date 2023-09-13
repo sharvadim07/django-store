@@ -10,15 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-import json
 from pathlib import Path
+
+import my_secrets
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-# Open secrets
-with open(f"{BASE_DIR}/../.my_secrets.json", "r") as f:
-    SECRETS = json.load(f)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -101,11 +98,11 @@ WSGI_APPLICATION = "store.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "HOST": SECRETS["DB_HOST"],
-        "PORT": SECRETS["DB_PORT"],
-        "NAME": SECRETS["DB_NAME"],
-        "USER": SECRETS["DB_USER"],
-        "PASSWORD": SECRETS["DB_PASSWORD"],
+        "HOST": my_secrets.DB_HOST,
+        "PORT": my_secrets.DB_PORT,
+        "NAME": my_secrets.DB_NAME,
+        "USER": my_secrets.DB_USER,
+        "PASSWORD": my_secrets.DB_PASSWORD,
     }
 }
 
@@ -168,8 +165,8 @@ LOGOUT_REDIRECT_URL = "/"
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 EMAIL_HOST = "smtp.yandex.com"
 EMAIL_PORT = 465
-EMAIL_HOST_USER = ""
-EMAIL_HOST_PASSWORD = ""
+EMAIL_HOST_USER = my_secrets.EMAIL_USER
+EMAIL_HOST_PASSWORD = my_secrets.EMAIL_HOST_PASS
 EMAIL_USE_SSL = True
 
 # Oauth
