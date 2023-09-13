@@ -7,6 +7,8 @@ from django.test import TestCase
 from django.urls import reverse
 from products.models import Category, Product
 
+# Use for unittest from vscode but will use default database and
+# you will have problems with assertTemplateUsed()
 # os.environ.setdefault("DJANGO_SETTINGS_MODULE", "store.settings")
 # setup()
 
@@ -16,8 +18,7 @@ class IndexViewTestCase(TestCase):
         path = reverse("index")
         response = self.client.get(path=path)
         self.assertEqual(response.status_code, HTTPStatus.OK)
-        self.assertEqual(response.template_name, ["products/index.html"])
-        # self.assertTemplateUsed(response, "products/index.html")
+        self.assertTemplateUsed(response, "products/index.html")
 
 
 class ProductsListViewTestCase(TestCase):
