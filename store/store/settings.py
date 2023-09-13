@@ -10,15 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-import json
 from pathlib import Path
+
+import my_secrets
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-# Open secrets
-with open(f"{BASE_DIR}/../.my_secrets.json", "r") as f:
-    SECRETS = json.load(f)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -29,7 +26,7 @@ SECRET_KEY = "django-insecure-xv0(u)()#g8(o(%#s3%xgst684z-h0t!ofkj@#18ys^5o69@&f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS: list = []
+ALLOWED_HOSTS: list = ["127.0.0.1", "localhost", "testserver"]
 
 DOMAIN_NAME = "http://localhost:8000"
 
@@ -42,6 +39,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # allauth apps
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.github",
+    # our apps
     "products",
     "users",
 ]
@@ -54,6 +57,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # allauth middleware
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = "store.urls"
@@ -66,6 +71,7 @@ TEMPLATES = [
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",
+                # `allauth` needs this from django
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
@@ -92,12 +98,11 @@ WSGI_APPLICATION = "store.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "HOST": SECRETS["DB_HOST"],
-        "NAME": "store_db",
-        "USER": "store_user",
-        "OPTIONS": {
-            "passfile": ".my_pgpass",
-        },
+        "HOST": my_secrets.DB_HOST,
+        "PORT": my_secrets.DB_PORT,
+        "NAME": my_secrets.DB_NAME,
+        "USER": my_secrets.DB_USER,
+        "PASSWORD": my_secrets.DB_PASSWORD,
     }
 }
 
@@ -160,6 +165,26 @@ LOGOUT_REDIRECT_URL = "/"
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 EMAIL_HOST = "smtp.yandex.com"
 EMAIL_PORT = 465
-EMAIL_HOST_USER = ""
-EMAIL_HOST_PASSWORD = ""
+EMAIL_HOST_USER = my_secrets.EMAIL_USER
+EMAIL_HOST_PASSWORD = my_secrets.EMAIL_HOST_PASS
 EMAIL_USE_SSL = True
+
+# Oauth
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    "django.contrib.auth.backends.ModelBackend",
+    # `allauth` specific authentication methods, such as login by email
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
+
+# Provider specific settings
+SOCIALACCOUNT_PROVIDERS = {
+    "github": {
+        "SCOPE": [
+            "user",
+            # 'repo',
+            # 'read:org',
+        ],
+    }
+}
