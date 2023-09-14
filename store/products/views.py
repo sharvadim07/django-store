@@ -2,6 +2,7 @@ from typing import Any, Dict
 
 from common.views import CommonMixin
 from django.contrib.auth.decorators import login_required
+from django.core.cache import cache
 from django.db.models.query import QuerySet
 from django.shortcuts import HttpResponseRedirect
 from django.views.generic.base import TemplateView
@@ -33,7 +34,12 @@ class ProductsListView(CommonMixin, ListView):
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super(ProductsListView, self).get_context_data()
-        context["categories"] = Category.objects.all()
+        cached_categories = cache.get("categories")
+        if cached_categories:
+            context["categories"] = cached_categories
+        else:
+            context["categories"] = Category.objects.all()
+            cache.set("categories", context["categories"], 30)
         return context
 
 
