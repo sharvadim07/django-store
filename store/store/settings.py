@@ -27,6 +27,7 @@ SECRET_KEY = "django-insecure-xv0(u)()#g8(o(%#s3%xgst684z-h0t!ofkj@#18ys^5o69@&f
 DEBUG = True
 
 ALLOWED_HOSTS: list = ["127.0.0.1", "localhost", "testserver"]
+INTERNAL_IPS = ["127.0.0.1", "localhost", "testserver"]
 
 DOMAIN_NAME = "http://localhost:8000"
 
@@ -39,6 +40,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # other apps
+    "debug_toolbar",
     # allauth apps
     "allauth",
     "allauth.account",
@@ -57,6 +60,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # other middleware
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     # allauth middleware
     "allauth.account.middleware.AccountMiddleware",
 ]
@@ -83,6 +88,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "store.wsgi.application"
 
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": my_secrets.REDIS_LOCATION,
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "PASSWORD": my_secrets.REDIS_PASSWORD,
+        },
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
