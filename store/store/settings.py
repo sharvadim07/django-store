@@ -177,7 +177,7 @@ LOGOUT_REDIRECT_URL = "/"
 # Sending Emails
 # Comment below line and fill USER and PASSWORD
 # if you would like to user real SMTP server
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 EMAIL_HOST = "smtp.yandex.com"
 EMAIL_PORT = 465
 EMAIL_HOST_USER = my_secrets.EMAIL_USER
@@ -203,3 +203,9 @@ SOCIALACCOUNT_PROVIDERS = {
         ],
     }
 }
+
+# Celery
+CELERY_BROKER_URL = my_secrets.CELERY_BROKER_URL
+CELERY_RESULT_BACKEND = my_secrets.CELERY_BROKER_URL
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+# CELERY_BROKER_PASSWORD = my_secrets.CELERY_BROKER_PASSWORD
