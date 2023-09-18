@@ -57,8 +57,7 @@
                 </div>
 
                 <div class="row">
-                    {% cache 30 object_list %}
-                        {% for product in object_list %}
+                    {% for product in object_list %}
                         <div class="col-lg-4 col-md-6 mb-4">
                             <div class="card h-100">
                                 <a href="#">
@@ -80,8 +79,7 @@
                                 </div>
                             </div>
                         </div>
-                        {% endfor %}
-                    {% endcache %}
+                    {% endfor %}
                 </div>
                 {% if is_paginated %}
                     <nav aria-label="Page navigation example">
