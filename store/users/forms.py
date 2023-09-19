@@ -58,7 +58,7 @@ class UserRegistrationForm(UserCreationForm):
             }
         ),
     )
-    email = forms.CharField(
+    email = forms.EmailField(
         widget=forms.EmailInput(
             attrs={
                 "class": "form-control py-4",
