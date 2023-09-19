@@ -23,10 +23,16 @@ class ProductsListView(CommonMixin, ListView):
     title = "Store - Каталог"
 
     def get_queryset(self) -> QuerySet[Any]:
-        queryset = super(ProductsListView, self).get_queryset()
+        cached_products = cache.get("products")
+        if cached_products:
+            queryset = cached_products
+        else:
+            queryset = super(ProductsListView, self).get_queryset().order_by("id")
+            cache.set("products", queryset, 30)
         category_id = self.kwargs.get("category_id")
         queryset = (
-            Category.objects.get(id=category_id).product_set.all()
+            # Category.objects.get(id=category_id).product_set.all()
+            queryset.filter(categories__in=[category_id])
             if category_id
             else queryset
         )
