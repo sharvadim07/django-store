@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.humanize",
     # other apps
     "debug_toolbar",
     # allauth apps
@@ -210,3 +211,8 @@ CELERY_BROKER_URL = my_secrets.CELERY_BROKER_URL
 CELERY_RESULT_BACKEND = my_secrets.CELERY_BROKER_URL
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 # CELERY_BROKER_PASSWORD = my_secrets.CELERY_BROKER_PASSWORD
+
+
+# Yookassa
+YOOKASSA_SHOP_ID = my_secrets.YOOKASSA_SHOP_ID
+YOOKASSA_SECRET_KEY = my_secrets.YOOKASSA_SECRET_KEY

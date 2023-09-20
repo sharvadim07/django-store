@@ -1,5 +1,6 @@
 {% extends "products/base.html" %}
 {% load static %}
+{% load humanize %}
 {% block css %}
     <!-- Custom styles for this template -->
     <link href={% static "/vendor/css/orders.css" %} rel="stylesheet">
@@ -8,9 +9,18 @@
 {% block content %}
     <!-- Page Content -->
     <section>
-        <div class="alert alert-warning text-center" role="alert">
+        {% comment %} <div class="alert alert-warning text-center" role="alert">
             Пожалуйста, заполните адрес электронной почты.
-        </div>
+        </div> {% endcomment %}
+        {% if messages or form.errors %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert"
+                    style="margin-top: 50px;">
+                {{ form.errors }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endif %}
         <div class="container">
             <div class="py-5 text-center">
                 <h1>Оформление заказа</h1>
@@ -22,30 +32,18 @@
                         <span class="badge badge-primary badge-pill text-white">3</span>
                     </h4>
                     <ul class="list-group mb-3">
-                        <li class="list-group-item d-flex justify-content-between lh-sm">
-                            <div>
-                                <h6 class="my-0">Product name</h6>
-                                <small class="text-muted">2 шт.</small>
-                            </div>
-                            <span class="text-muted">11 400 руб.</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between lh-sm">
-                            <div>
-                                <h6 class="my-0">Second product</h6>
-                                <small class="text-muted">1 шт.</small>
-                            </div>
-                            <span class="text-muted">3 200 руб.</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between lh-sm">
-                            <div>
-                                <h6 class="my-0">Third item</h6>
-                                <small class="text-muted">3 шт.</small>
-                            </div>
-                            <span class="text-muted">12 894 руб.</span>
-                        </li>
+                        {% for product_basket in products_basket %}
+                            <li class="list-group-item d-flex justify-content-between lh-sm">
+                                <div>
+                                    <h6 class="my-0">{{ product_basket.product.name }}</h6>
+                                    <small class="text-muted">{{ product_basket.quantity }} шт.</small>
+                                </div>
+                                <span class="text-muted">{{ product_basket.sum|intcomma }} руб.</span>
+                            </li>
+                        {% endfor %}
                         <li class="list-group-item d-flex justify-content-between">
                             <span>Сумма к оплате</span>
-                            <strong>27 497 руб.</strong>
+                            <strong>{{ products_basket.total_sum|intcomma }} руб.</strong>
                         </li>
                     </ul>
                 </div>
