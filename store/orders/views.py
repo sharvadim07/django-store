@@ -2,16 +2,18 @@ import json
 import logging
 import uuid
 from http import HTTPStatus
-from typing import Any
+from typing import Any, Dict
 
 from common.views import CommonMixin
 from django.conf import settings
+from django.db.models.query import QuerySet
 from django.forms.models import BaseModelForm
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView
+from django.views.generic.list import ListView
 from orders.forms import OrderCreateForm
 from orders.models import Order
 from products.models import Basket
@@ -31,8 +33,6 @@ class SuccessTemplateView(CommonMixin, TemplateView):
 class OrderCreateView(CommonMixin, CreateView):
     template_name = "orders/order_create.html"
     form_class = OrderCreateForm
-    success_url = reverse_lazy("orders:order_create")
-    success_message = "Заказ успешно оформлен!"
     title = "Store - Оформление заказа"
 
     def post(self, request: HttpRequest, *args: str, **kwargs: Any) -> HttpResponse:
@@ -69,6 +69,23 @@ class OrderCreateView(CommonMixin, CreateView):
         return super().form_valid(form)
 
 
+class OrdersListView(CommonMixin, ListView):
+    model = Order
+    template_name = "orders/orders.html"
+    title = "Store - Заказы"
+    ordering = "-id"
+
+    def get_queryset(self) -> QuerySet[Any]:
+        queryset = (
+            super(OrdersListView, self).get_queryset().filter(user=self.request.user)
+        )
+        return queryset
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super(OrdersListView, self).get_context_data()
+        return context
+
+
 @csrf_exempt
 def payment_yookasssa_webhook_view(request):
     if request.method == "POST":
@@ -82,7 +99,10 @@ def payment_yookasssa_webhook_view(request):
             return HttpResponse(status=HTTPStatus.NOT_ACCEPTABLE)
         if notification.object.status == "succeeded":
             order_id = notification.object.metadata["order_id"]
-            fulfill_order(order_id)
+            try:
+                fulfill_order(order_id)
+            except Exception:
+                return HttpResponse(status=HTTPStatus.INTERNAL_SERVER_ERROR)
         return HttpResponse(status=HTTPStatus.OK)
     else:
         return HttpResponseRedirect(reverse("index"))

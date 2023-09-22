@@ -7,10 +7,10 @@ from users.models import User
 # Create your models here.
 class Order(models.Model):
     class Status(models.IntegerChoices):
-        CREATED = 0, gettext_lazy("Created")
-        PAID = 1, gettext_lazy("Paid")
-        ON_WAY = 2, gettext_lazy("On way")
-        DELIVERED = 3, gettext_lazy("Delivered")
+        CREATED = 0, gettext_lazy("Создан")
+        PAID = 1, gettext_lazy("Оплачен")
+        ON_WAY = 2, gettext_lazy("В пути")
+        DELIVERED = 3, gettext_lazy("Доставлен")
 
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -32,7 +32,7 @@ class Order(models.Model):
             "purchsed_items": [
                 product_basket.de_json() for product_basket in products_basket
             ],
-            "total_sum": products_basket.total_sum,
+            "total_sum": float(products_basket.total_sum),
         }
         basket.delete()
         self.save()
