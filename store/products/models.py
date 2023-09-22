@@ -73,3 +73,12 @@ class ProductBasket(models.Model):
     @property
     def sum(self):
         return self.product.price * self.quantity
+
+    def de_json(self):
+        basket_item = {
+            "product_name": self.product.name,
+            "quantity": self.quantity,
+            "price": float(self.product.price),
+            "sum": float(self.sum),
+        }
+        return basket_item

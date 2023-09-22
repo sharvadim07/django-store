@@ -1,7 +1,7 @@
 from django.db import models
-
-from users.models import User
 from django.utils.translation import gettext_lazy
+from products.models import Basket
+from users.models import User
 
 
 # Create your models here.
@@ -23,3 +23,16 @@ class Order(models.Model):
 
     def __str__(self) -> str:
         return f"Order #{self.id} for {self.user.username}"
+
+    def update_after_payment(self):
+        self.status = self.Status.PAID
+        basket = Basket.objects.filter(user=self.user).last()
+        products_basket = basket.productbasket_set.all()
+        self.basket_history = {
+            "purchsed_items": [
+                product_basket.de_json() for product_basket in products_basket
+            ],
+            "total_sum": products_basket.total_sum,
+        }
+        basket.delete()
+        self.save()

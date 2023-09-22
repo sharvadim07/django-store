@@ -30,6 +30,7 @@ ALLOWED_HOSTS: list = my_secrets.ALLOWED_HOSTS
 INTERNAL_IPS: list = my_secrets.INTERNAL_IPS
 
 DOMAIN_NAME = "http://localhost:8000"
+APPEND_SLASH = False
 
 # Application definition
 
