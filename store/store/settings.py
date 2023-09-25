@@ -26,10 +26,11 @@ SECRET_KEY = "django-insecure-xv0(u)()#g8(o(%#s3%xgst684z-h0t!ofkj@#18ys^5o69@&f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS: list = ["127.0.0.1", "localhost", "testserver"]
-INTERNAL_IPS = ["127.0.0.1", "localhost", "testserver"]
+ALLOWED_HOSTS: list = my_secrets.ALLOWED_HOSTS
+INTERNAL_IPS: list = my_secrets.INTERNAL_IPS
 
 DOMAIN_NAME = "http://localhost:8000"
+APPEND_SLASH = False
 
 # Application definition
 
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.humanize",
     # other apps
     "debug_toolbar",
     # allauth apps
@@ -50,6 +52,7 @@ INSTALLED_APPS = [
     # our apps
     "products",
     "users",
+    "orders",
 ]
 
 MIDDLEWARE = [
@@ -209,3 +212,8 @@ CELERY_BROKER_URL = my_secrets.CELERY_BROKER_URL
 CELERY_RESULT_BACKEND = my_secrets.CELERY_BROKER_URL
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 # CELERY_BROKER_PASSWORD = my_secrets.CELERY_BROKER_PASSWORD
+
+
+# Yookassa
+YOOKASSA_SHOP_ID = my_secrets.YOOKASSA_SHOP_ID
+YOOKASSA_SECRET_KEY = my_secrets.YOOKASSA_SECRET_KEY

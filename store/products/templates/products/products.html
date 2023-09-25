@@ -1,6 +1,7 @@
 {% extends "products/base.html" %}
 {% load static %}
 {% load cache %}
+{% load humanize %}
 
 {% block css %}
     <!-- Custom styles for this template -->
@@ -57,8 +58,7 @@
                 </div>
 
                 <div class="row">
-                    {% cache 30 object_list %}
-                        {% for product in object_list %}
+                    {% for product in object_list %}
                         <div class="col-lg-4 col-md-6 mb-4">
                             <div class="card h-100">
                                 <a href="#">
@@ -70,7 +70,7 @@
                                     <h4 class="card-title">
                                         <a href="#">{{ product.name }}</a>
                                     </h4>
-                                    <h5>{{ product.price }} руб.</h5>
+                                    <h5>{{ product.price|intcomma }} руб.</h5>
                                     <p class="card-text">{{ product.description }}</p>
                                 </div>
                                 <div class="card-footer text-center">
@@ -80,8 +80,7 @@
                                 </div>
                             </div>
                         </div>
-                        {% endfor %}
-                    {% endcache %}
+                    {% endfor %}
                 </div>
                 {% if is_paginated %}
                     <nav aria-label="Page navigation example">

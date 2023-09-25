@@ -134,3 +134,4 @@ data/
 # *.sqlite3
 .my_pgpass
 my_secrets.py
+ngrok*

@@ -47,7 +47,7 @@ class Product(models.Model):
 
 class Basket(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return f"Корзина для {self.user.username}"
@@ -73,3 +73,12 @@ class ProductBasket(models.Model):
     @property
     def sum(self):
         return self.product.price * self.quantity
+
+    def de_json(self):
+        basket_item = {
+            "product_name": self.product.name,
+            "quantity": self.quantity,
+            "price": float(self.product.price),
+            "sum": float(self.sum),
+        }
+        return basket_item
