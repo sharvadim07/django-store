@@ -2,7 +2,7 @@ import json
 import logging
 import uuid
 from http import HTTPStatus
-from typing import Any, Dict
+from typing import Any
 
 from common.views import CommonMixin
 from django.conf import settings
@@ -12,6 +12,7 @@ from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import TemplateView
+from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
 from orders.forms import OrderCreateForm
@@ -81,8 +82,14 @@ class OrdersListView(CommonMixin, ListView):
         )
         return queryset
 
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        context = super(OrdersListView, self).get_context_data()
+
+class OrderDetailView(DetailView):
+    model = Order
+    template_name = "orders/order.html"
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["title"] = f"Store - Заказ #{self.get_object().id}"
         return context
 
 
