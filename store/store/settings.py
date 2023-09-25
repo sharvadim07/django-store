@@ -12,7 +12,32 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
-import my_secrets
+import environ
+
+env = environ.Env(
+    DEBUG=(bool),
+    SECRET_KEY=(str),
+    DOMAIN_NAME=(str),
+    ALLOWED_HOSTS=(list),
+    INTERNAL_IPS=(list),
+    DB_HOST=(str),
+    DB_PORT=(int),
+    DB_NAME=(str),
+    DB_USER=(str),
+    DB_PASSWORD=(str),
+    EMAIL_HOST=(str),
+    EMAIL_PORT=(int),
+    EMAIL_HOST_USER=(str),
+    EMAIL_HOST_PASS=(str),
+    EMAIL_USE_SSL=(bool),
+    REDIS_LOCATION=(str),
+    REDIS_PASSWORD=(str),
+    CELERY_BROKER_URL=(str),
+    CELERY_RESULT_BACKEND=(str),
+    YOOKASSA_SHOP_ID=(str),
+    YOOKASSA_SECRET_KEY=(str),
+)
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,15 +46,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-xv0(u)()#g8(o(%#s3%xgst684z-h0t!ofkj@#18ys^5o69@&f"
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS: list = my_secrets.ALLOWED_HOSTS
-INTERNAL_IPS: list = my_secrets.INTERNAL_IPS
+ALLOWED_HOSTS: list = env("ALLOWED_HOSTS")
+INTERNAL_IPS: list = env("INTERNAL_IPS")
 
-DOMAIN_NAME = "http://localhost:8000"
+DOMAIN_NAME = env("DOMAIN_NAME")
 APPEND_SLASH = False
 
 # Application definition
@@ -94,10 +119,10 @@ WSGI_APPLICATION = "store.wsgi.application"
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": my_secrets.REDIS_LOCATION,
+        "LOCATION": env("REDIS_LOCATION"),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            "PASSWORD": my_secrets.REDIS_PASSWORD,
+            "PASSWORD": env("REDIS_PASSWORD"),
         },
     }
 }
@@ -116,11 +141,11 @@ CACHES = {
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "HOST": my_secrets.DB_HOST,
-        "PORT": my_secrets.DB_PORT,
-        "NAME": my_secrets.DB_NAME,
-        "USER": my_secrets.DB_USER,
-        "PASSWORD": my_secrets.DB_PASSWORD,
+        "HOST": env("DB_HOST"),
+        "PORT": env("DB_PORT"),
+        "NAME": env("DB_NAME"),
+        "USER": env("DB_USER"),
+        "PASSWORD": env("DB_PASSWORD"),
     }
 }
 
@@ -178,14 +203,16 @@ LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
 # Sending Emails
-# Comment below line and fill USER and PASSWORD
-# if you would like to user real SMTP server
-# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-EMAIL_HOST = "smtp.yandex.com"
-EMAIL_PORT = 465
-EMAIL_HOST_USER = my_secrets.EMAIL_USER
-EMAIL_HOST_PASSWORD = my_secrets.EMAIL_HOST_PASS
-EMAIL_USE_SSL = True
+if DEBUG:
+    # Comment below line and fill USER and PASSWORD
+    # if you would like to user real SMTP server
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+else:
+    EMAIL_HOST = env("EMAIL_HOST")
+    EMAIL_PORT = env("EMAIL_HOST")
+    EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+    EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+    EMAIL_USE_SSL = env("EMAIL_USE_SSL")
 
 # Oauth
 AUTHENTICATION_BACKENDS = [
@@ -208,12 +235,12 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 # Celery
-CELERY_BROKER_URL = my_secrets.CELERY_BROKER_URL
-CELERY_RESULT_BACKEND = my_secrets.CELERY_BROKER_URL
+CELERY_BROKER_URL = env("CELERY_BROKER_URL")
+CELERY_RESULT_BACKEND = env("CELERY_RESULT_BACKEND")
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 # CELERY_BROKER_PASSWORD = my_secrets.CELERY_BROKER_PASSWORD
 
 
 # Yookassa
-YOOKASSA_SHOP_ID = my_secrets.YOOKASSA_SHOP_ID
-YOOKASSA_SECRET_KEY = my_secrets.YOOKASSA_SECRET_KEY
+YOOKASSA_SHOP_ID = env("YOOKASSA_SHOP_ID")
+YOOKASSA_SECRET_KEY = env("YOOKASSA_SECRET_KEY")
