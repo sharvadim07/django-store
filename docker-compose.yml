@@ -1,0 +1,15 @@
+version: "3.9"
+services:
+  server:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    command: python ./store/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./:/server
+    ports:
+      - "8000:8000"
+    # depends_on:
+    #   - db
+    environment:
+      DEBUG: 'True'
