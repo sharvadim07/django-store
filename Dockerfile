@@ -4,6 +4,5 @@ RUN mkdir /server && apt-get update && apt-get install -y git libpq-dev postgres
 WORKDIR /server
 
 COPY ./ /server
-COPY ./.env /server
 
 RUN pip install poetry && poetry config virtualenvs.create false && poetry install

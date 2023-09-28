@@ -9,7 +9,8 @@ services:
       - ./:/server
     ports:
       - "8000:8000"
-    # depends_on:
+    env_file: .env
+    #depends_on:
     #   - db
-    environment:
-      DEBUG: 'True'
+    #environment:
+    #  DEBUG: 'True'
