@@ -13,21 +13,23 @@ services:
       dockerfile: ./Dockerfile
     entrypoint: /server/server-entrypoint.sh
     volumes:
-      - ./:/server
+      - static_volume:/server/store/static
     ports:
       - "8000:8000"
-    env_file: .env
+    env_file: .env_prod
   worker:
     build:
       context: ./
       dockerfile: ./Dockerfile
     entrypoint: /server/worker-entrypoint.sh
     volumes:
-      - ./:/server
-    env_file: .env
+      - static_volume:/server/store/static
+    env_file: .env_prod
     depends_on:
       - server
     #depends_on:
     #   - db
     #environment:
     #  DEBUG: 'True'
+volumes:
+    static_volume: {}
