@@ -6,3 +6,4 @@ WORKDIR /server
 COPY ./ /server
 
 RUN pip install poetry && poetry config virtualenvs.create false && poetry install
+RUN chmod +x /server/worker-entrypoint.sh
