@@ -18,7 +18,7 @@ python manage.py collectstatic --noinput
 # First start
 # python manage.py createsuperuser --noinput
 
-gunicorn backend.wsgi --bind 0.0.0.0:8000 --workers 4 --threads 4
+gunicorn store.wsgi --bind 0.0.0.0:8000 --workers 4 --threads 4
 
 # For debug
 #python manage.py runserver 0.0.0.0:8000
