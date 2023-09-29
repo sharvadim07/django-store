@@ -135,3 +135,4 @@ data/
 .my_pgpass
 my_secrets.py
 ngrok*
+.env_prod
