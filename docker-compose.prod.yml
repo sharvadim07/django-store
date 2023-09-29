@@ -3,7 +3,7 @@ services:
   nginx:
     image: nginx:1.25-bookworm
     ports:
-        - 80:80
+        - 888:80
     volumes:
         - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
         - static_volume:/server/store/static
