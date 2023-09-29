@@ -14,8 +14,6 @@ services:
     entrypoint: /server/server-entrypoint.sh
     volumes:
       - static_volume:/server/store/static
-    ports:
-      - "8000:8000"
     env_file: .env_prod
   worker:
     build:
