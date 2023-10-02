@@ -2,7 +2,7 @@ version: "3.9"
 services:
   server:
     image: django-store_server_debug
-    container: django-store_server_debug
+    container_name: django-store_server_debug
     build:
       context: ./
       dockerfile: ./Dockerfile
@@ -14,7 +14,7 @@ services:
     env_file: .env
   worker:
     image: django-store_worker_debug
-    container: django-store_worker_debug
+    container_name: django-store_worker_debug
     build:
       context: ./
       dockerfile: ./Dockerfile
