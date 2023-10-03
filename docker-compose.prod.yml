@@ -10,6 +10,8 @@ services:
         - static_volume:/server/store/static
         - media_volume:/server/store/media
   server:
+    image: django-store_server_prod
+    container_name: django-store_server_prod
     build:
       context: ./
       dockerfile: ./Dockerfile
@@ -19,6 +21,8 @@ services:
       - media_volume:/server/store/media
     env_file: .env_prod
   worker:
+    image: django-store_worker_prod
+    container_name: django-store_worker_prod
     build:
       context: ./
       dockerfile: ./Dockerfile
