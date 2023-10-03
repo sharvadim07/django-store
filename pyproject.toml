@@ -15,6 +15,7 @@ django-allauth = "^0.56.1"
 django-redis = "^5.3.0"
 celery = {extras = ["redis"], version = "^5.3.4"}
 yookassa = "^2.4.0"
+djangorestframework = "^3.14.0"
 
 
 [tool.poetry.group.dev.dependencies]
