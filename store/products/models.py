@@ -23,6 +23,7 @@ class Product(models.Model):
     price = models.DecimalField(
         max_digits=7,
         decimal_places=2,
+        null=False,
     )
     quantity = models.PositiveIntegerField(default=0)
     categories = models.ManyToManyField(Category)

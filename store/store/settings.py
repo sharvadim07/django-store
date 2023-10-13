@@ -14,6 +14,12 @@ from pathlib import Path
 
 import environ
 
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# read th .env file
+environ.Env.read_env(env_file=str(BASE_DIR.parent) + "/.env")
+
 env = environ.Env(
     DEBUG=(bool),
     SECRET_KEY=(str),
@@ -38,9 +44,6 @@ env = environ.Env(
     YOOKASSA_SECRET_KEY=(str),
 )
 
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -71,6 +74,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "django_extensions",
     "rest_framework",
+    "rest_framework.authtoken",
     # allauth apps
     "allauth",
     "allauth.account",
@@ -257,4 +261,7 @@ YOOKASSA_SECRET_KEY = env("YOOKASSA_SECRET_KEY")
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": 3,
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication",
+    ],
 }
