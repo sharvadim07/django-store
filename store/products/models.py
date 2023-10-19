@@ -17,14 +17,13 @@ class Category(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=128)
-    image = models.ImageField(upload_to="products_images")
+    image = models.ImageField(upload_to="products_images", blank=True)
     description = models.TextField()
     short_description = models.TextField(null=True, blank=True)
     price = models.DecimalField(
         max_digits=7,
         decimal_places=2,
-        null=True,
-        blank=True,
+        null=False,
     )
     quantity = models.PositiveIntegerField(default=0)
     categories = models.ManyToManyField(Category)
@@ -52,6 +51,30 @@ class Basket(models.Model):
     def __str__(self) -> str:
         return f"Корзина для {self.user.username}"
 
+    @classmethod
+    def create_or_update(cls, product_id, user):
+        product = Product.objects.filter(id=product_id).last()
+        if not product:
+            raise Product.DoesNotExist()
+        is_created = False
+        basket = Basket.objects.filter(user=user).last()
+        if not basket:
+            basket = Basket(user=user)
+            basket.save()
+            is_created = True
+        product_basket = ProductBasket.objects.filter(
+            basket=basket,
+            product=product,
+        ).last()
+        if product_basket:
+            product_basket.quantity += 1
+            product_basket.save()
+        else:
+            product_basket = ProductBasket(
+                product=product, basket=basket, quantity=1
+            ).save()
+        return basket, is_created
+
 
 class ProductBasketQuerySet(models.QuerySet):
     @property
@@ -65,7 +88,9 @@ class ProductBasketQuerySet(models.QuerySet):
 
 class ProductBasket(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    basket = models.ForeignKey(Basket, on_delete=models.CASCADE)
+    basket = models.ForeignKey(
+        Basket, related_name="products", on_delete=models.CASCADE
+    )
     quantity = models.PositiveIntegerField(default=0)
 
     objects = ProductBasketQuerySet.as_manager()
