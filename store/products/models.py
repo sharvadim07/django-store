@@ -64,7 +64,9 @@ class ProductBasketQuerySet(models.QuerySet):
 
 class ProductBasket(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    basket = models.ForeignKey(Basket, on_delete=models.CASCADE)
+    basket = models.ForeignKey(
+        Basket, related_name="products", on_delete=models.CASCADE
+    )
     quantity = models.PositiveIntegerField(default=0)
 
     objects = ProductBasketQuerySet.as_manager()
