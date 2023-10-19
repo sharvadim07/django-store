@@ -6,7 +6,7 @@ def products_basket(request):
     if user.is_authenticated:
         basket = Basket.objects.filter(user=user).last()
         if basket:
-            return {"products_basket": basket.productbasket_set.all()}
+            return {"products_basket": basket.products.all()}
         else:
             return {"products_basket": []}
     else:

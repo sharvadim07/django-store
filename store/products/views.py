@@ -52,23 +52,7 @@ class ProductsListView(CommonMixin, ListView):
 
 @login_required
 def add_product_to_basket(request, product_id):
-    product = Product.objects.get(id=product_id)
-    user_baskets = Basket.objects.filter(user=request.user)
-    basket = None
-    if user_baskets.exists():
-        basket = user_baskets.last()
-    else:
-        basket = Basket(user=request.user)
-        basket.save()
-    product_basket = ProductBasket.objects.filter(
-        basket=basket,
-        product=product,
-    ).last()
-    if product_basket:
-        product_basket.quantity += 1
-        product_basket.save()
-    else:
-        ProductBasket(product=product, basket=basket, quantity=1).save()
+    Basket.create_or_update(product_id, request.user)
     return HttpResponseRedirect(
         request.META["HTTP_REFERER"],
     )

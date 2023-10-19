@@ -1,6 +1,5 @@
 from products.models import Basket, Category, Product, ProductBasket
 from rest_framework import fields, serializers
-from users.models import User
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -26,7 +25,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
 class ProductBasketSerializer(serializers.ModelSerializer):
     product = ProductSerializer(many=False)
-    # sum = fields.FloatField()
+    sum = fields.FloatField(required=False)
 
     class Meta:
         model = ProductBasket
@@ -41,7 +40,7 @@ class BasketSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(
         many=False,
         slug_field="username",
-        queryset=User.objects.all(),
+        read_only=True,
     )
     products = ProductBasketSerializer(many=True)
     total_sum = fields.SerializerMethodField()

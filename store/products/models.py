@@ -51,6 +51,30 @@ class Basket(models.Model):
     def __str__(self) -> str:
         return f"Корзина для {self.user.username}"
 
+    @classmethod
+    def create_or_update(cls, product_id, user):
+        product = Product.objects.filter(id=product_id).last()
+        if not product:
+            raise Product.DoesNotExist()
+        is_created = False
+        basket = Basket.objects.filter(user=user).last()
+        if not basket:
+            basket = Basket(user=user)
+            basket.save()
+            is_created = True
+        product_basket = ProductBasket.objects.filter(
+            basket=basket,
+            product=product,
+        ).last()
+        if product_basket:
+            product_basket.quantity += 1
+            product_basket.save()
+        else:
+            product_basket = ProductBasket(
+                product=product, basket=basket, quantity=1
+            ).save()
+        return basket, is_created
+
 
 class ProductBasketQuerySet(models.QuerySet):
     @property
